@@ -20,6 +20,10 @@ type PostTweetInput struct {
 	ReplyToID string `json:"reply_to_id,omitempty"`
 }
 
+type DeleteTweetInput struct {
+	TweetID string `json:"tweet_id" validate:"required"`
+}
+
 func RegisterTweetTools(s *server.MCPServer) {
 	getTool := mcp.NewTool("x_get_tweet",
 		mcp.WithDescription("Get a specific tweet by its ID with full details including metrics and author info"),
@@ -33,6 +37,12 @@ func RegisterTweetTools(s *server.MCPServer) {
 		mcp.WithString("reply_to_id", mcp.Description("Optional tweet ID to reply to")),
 	)
 	s.AddTool(postTool, mcp.NewTypedToolHandler(postTweetHandler))
+
+	deleteTool := mcp.NewTool("x_delete_tweet",
+		mcp.WithDescription("Delete a tweet you posted on X/Twitter"),
+		mcp.WithString("tweet_id", mcp.Required(), mcp.Description("The tweet ID to delete")),
+	)
+	s.AddTool(deleteTool, mcp.NewTypedToolHandler(deleteTweetHandler))
 }
 
 func getTweetHandler(ctx context.Context, request mcp.CallToolRequest, input GetTweetInput) (*mcp.CallToolResult, error) {
@@ -131,5 +141,23 @@ func postTweetHandler(ctx context.Context, request mcp.CallToolRequest, input Po
 		return nil, fmt.Errorf("marshal response: %w", err)
 	}
 
+	return mcp.NewToolResultText(string(out)), nil
+}
+
+func deleteTweetHandler(ctx context.Context, request mcp.CallToolRequest, input DeleteTweetInput) (*mcp.CallToolResult, error) {
+	client := services.TwitterClient()
+
+	_, err := client.DeleteTweet(ctx, input.TweetID)
+	if err != nil {
+		return nil, fmt.Errorf("delete tweet: %w", err)
+	}
+
+	out, err := yaml.Marshal(map[string]string{
+		"status":   "deleted",
+		"tweet_id": input.TweetID,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("marshal: %w", err)
+	}
 	return mcp.NewToolResultText(string(out)), nil
 }
