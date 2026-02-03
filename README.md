@@ -13,24 +13,16 @@ A Model Context Protocol (MCP) server that provides AI assistants with access to
 
 ## Installation
 
-### Using Claude MCP
-
-```bash
-claude mcp add x-mcp stdio go run github.com/nguyenvanduocit/x-mcp@latest/main.go -env ~/.claude/x-mcp/.env
-```
-
-Or build for faster startup:
-
-```bash
-go install github.com/nguyenvanduocit/x-mcp@latest
-
-claude mcp add x-mcp stdio x-mcp -env ~/.claude/x-mcp/.env
-```
-
 ### Setup Credentials
 
 1. Get your API keys from [X Developer Portal](https://developer.x.com/en/portal/dashboard)
-2. Copy `.env.example` to `bin/.env` (or your preferred location)
+2. Create env file at `~/.claude/x-mcp/.env`:
+
+```bash
+mkdir -p ~/.claude/x-mcp
+cp .env.example ~/.claude/x-mcp/.env
+```
+
 3. Fill in your credentials:
 
 ```bash
@@ -38,13 +30,40 @@ X_API_KEY=your_api_key
 X_API_SECRET=your_api_secret
 X_ACCESS_TOKEN=your_access_token
 X_ACCESS_TOKEN_SECRET=your_access_token_secret
+
+# Optional proxy
+# PROXY_URL=http://localhost:8080
 ```
+
+### Using Claude MCP (stdio)
+
+```bash
+go install github.com/nguyenvanduocit/x-mcp@latest
+
+claude mcp add x-mcp stdio -- x-mcp -env ~/.claude/x-mcp/.env
+```
+
+Or without installing (slower startup):
+
+```bash
+claude mcp add x-mcp stdio -- go run github.com/nguyenvanduocit/x-mcp@latest -env ~/.claude/x-mcp/.env
+```
+
+### Using HTTP mode
+
+```bash
+x-mcp -env ~/.claude/x-mcp/.env -http_port 8080
+```
+
+The server will be available at `http://localhost:8080/mcp`.
 
 ### Verify Setup
 
-Run the included verification script:
+Clone the repo and run the verification script:
 
 ```bash
+git clone https://github.com/nguyenvanduocit/x-mcp.git
+cd x-mcp
 go run scripts/verify-token/main.go \
   -api-key=$X_API_KEY \
   -api-secret=$X_API_SECRET \
