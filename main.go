@@ -54,6 +54,10 @@ func main() {
 	tools.RegisterThreadTools(mcpServer)
 	tools.RegisterLikeTools(mcpServer)
 	tools.RegisterRetweetTools(mcpServer)
+	tools.RegisterMentionTools(mcpServer)
+	tools.RegisterQuoteTools(mcpServer)
+	tools.RegisterModerationTools(mcpServer)
+	tools.RegisterListTools(mcpServer)
 
 	if *httpPort != "" {
 		log.Printf("X MCP server available at http://localhost:%s/mcp", *httpPort)
