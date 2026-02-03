@@ -1,65 +1,97 @@
-# X MCP Server
+## X MCP
 
-A Model Context Protocol (MCP) server that provides AI assistants with access to X/Twitter API. Search tweets, post content, retrieve user profiles, and more.
+An MCP server that gives AI assistants direct access to X/Twitter — search tweets, post content, manage threads, and retrieve user profiles.
 
-## Features
+Built for real workflows: monitor conversations, publish threads, and gather intelligence from X without leaving your AI assistant.
 
-- **Search tweets** - Search recent tweets using Twitter search syntax
-- **Post tweets** - Create new tweets or reply to existing ones
-- **Post threads** - Post multi-tweet threads automatically
-- **Get user info** - Retrieve profile information for any user
-- **Get user timeline** - Fetch recent tweets from any user
-- **Get tweet details** - Retrieve full tweet information with metrics
+## Available tools
+
+### Tweets
+- **x_search_tweets** - Search recent tweets using Twitter search syntax
+- **x_get_tweet** - Get a specific tweet by ID with full details and metrics
+- **x_post_tweet** - Post a new tweet or reply to an existing tweet
+- **x_post_thread** - Post a multi-tweet thread (tweets separated by `|||`)
+
+### Users
+- **x_get_user** - Get user profile information by username
+- **x_get_user_timeline** - Get recent tweets from a user's timeline
 
 ## Installation
 
-### Setup Credentials
+Copy this prompt to your AI assistant:
 
-1. Get your API keys from [X Developer Portal](https://developer.x.com/en/portal/dashboard)
-2. Create env file at `~/.claude/x-mcp/.env`:
-
-```bash
-mkdir -p ~/.claude/x-mcp
-cp .env.example ~/.claude/x-mcp/.env
+```
+Install the X MCP server (https://github.com/nguyenvanduocit/x-mcp) for my Claude Desktop or Cursor IDE. Read the MCP documentation carefully and guide me through the installation step by step.
 ```
 
-3. Fill in your credentials:
+If your AI assistant cannot help with this installation, it indicates either a misconfiguration or an ineffective AI tool. A capable AI assistant should be able to guide you through MCP installation.
 
-```bash
-X_API_KEY=your_api_key
-X_API_SECRET=your_api_secret
-X_ACCESS_TOKEN=your_access_token
-X_ACCESS_TOKEN_SECRET=your_access_token_secret
+## Quick start
 
-# Optional proxy
-# PROXY_URL=http://localhost:8080
+### 1) Get API credentials
+Create your keys at [X Developer Portal](https://developer.x.com/en/portal/dashboard).
+
+### 2) Add to Cursor
+
+#### Binary
+```json
+{
+  "mcpServers": {
+    "x": {
+      "command": "x-mcp",
+      "args": ["-env", "/path/to/your/.env"],
+      "env": {
+        "X_API_KEY": "your-api-key",
+        "X_API_SECRET": "your-api-secret",
+        "X_ACCESS_TOKEN": "your-access-token",
+        "X_ACCESS_TOKEN_SECRET": "your-access-token-secret"
+      }
+    }
+  }
+}
 ```
 
-### Using Claude MCP (stdio)
-
+Install the binary:
 ```bash
 go install github.com/nguyenvanduocit/x-mcp@latest
-
-claude mcp add x-mcp stdio -- x-mcp -env ~/.claude/x-mcp/.env
 ```
 
-Or without installing (slower startup):
-
+### 3) Add to Claude Code
 ```bash
-claude mcp add x-mcp stdio -- go run github.com/nguyenvanduocit/x-mcp@latest -env ~/.claude/x-mcp/.env
+claude mcp add x-mcp -- x-mcp -env /path/to/your/.env
 ```
 
-### Using HTTP mode
+### 4) Try it
+- "Search for tweets about golang from the last week"
+- "Post a tweet saying Hello from X MCP!"
+- "Get user profile for elonmusk"
+- "Post a thread about the top 3 Go features"
 
+## Configuration
+
+Required environment variables:
+- **X_API_KEY** - Your X API key
+- **X_API_SECRET** - Your X API secret
+- **X_ACCESS_TOKEN** - Your X access token
+- **X_ACCESS_TOKEN_SECRET** - Your X access token secret
+
+Optional:
+- **PROXY_URL** - HTTP proxy URL (e.g., `http://localhost:8080`)
+
+`.env` file example:
 ```bash
-x-mcp -env ~/.claude/x-mcp/.env -http_port 8080
+X_API_KEY=your-api-key
+X_API_SECRET=your-api-secret
+X_ACCESS_TOKEN=your-access-token
+X_ACCESS_TOKEN_SECRET=your-access-token-secret
 ```
 
-The server will be available at `http://localhost:8080/mcp`.
+HTTP mode (optional, for debugging):
+```bash
+x-mcp -env .env -http_port 8080
+```
 
-### Verify Setup
-
-Clone the repo and run the verification script:
+## Verify credentials
 
 ```bash
 git clone https://github.com/nguyenvanduocit/x-mcp.git
@@ -71,42 +103,5 @@ go run scripts/verify-token/main.go \
   -access-token-secret=$X_ACCESS_TOKEN_SECRET
 ```
 
-## Available Tools
-
-| Tool | Description |
-|------|-------------|
-| `x_search_tweets` | Search recent tweets using Twitter search syntax |
-| `x_get_tweet` | Get a specific tweet by ID with full details |
-| `x_post_tweet` | Post a new tweet or reply to an existing tweet |
-| `x_post_thread` | Post a multi-tweet thread (tweets separated by `|||`) |
-| `x_get_user` | Get user profile information by username |
-| `x_get_user_timeline` | Get recent tweets from a user's timeline |
-
-## Usage Examples
-
-### Search tweets
-```
-Search for tweets about golang from the last week
-```
-
-### Post a tweet
-```
-Post a tweet saying "Hello from X MCP!"
-```
-
-### Post a thread
-```
-Post a thread with:
-1. First tweet introducing the topic
-2. Second tweet with more details
-3. Third tweet with conclusion
-```
-
-### Get user info
-```
-Get user profile for elonmusk
-```
-
 ## License
-
 MIT
