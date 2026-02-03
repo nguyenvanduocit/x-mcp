@@ -11,10 +11,29 @@ Built for real workflows: monitor conversations, publish threads, and gather int
 - **x_get_tweet** - Get a specific tweet by ID with full details and metrics
 - **x_post_tweet** - Post a new tweet or reply to an existing tweet
 - **x_post_thread** - Post a multi-tweet thread (tweets separated by `|||`)
+- **x_delete_tweet** - Delete a tweet you posted
+- **x_get_quote_tweets** - Get tweets that quote a specific tweet
+
+### Engagement
+- **x_like_tweet** - Like a tweet
+- **x_unlike_tweet** - Unlike a tweet
+- **x_retweet** - Retweet a tweet
+- **x_unretweet** - Undo a retweet
 
 ### Users
 - **x_get_user** - Get user profile information by username
 - **x_get_user_timeline** - Get recent tweets from a user's timeline
+- **x_get_mentions** - Get recent tweets mentioning a user
+
+### Lists
+- **x_get_user_lists** - Get lists owned by a user
+- **x_get_list_tweets** - Get recent tweets from a list
+
+### Moderation
+- **x_mute_user** - Mute a user
+- **x_unmute_user** - Unmute a user
+- **x_block_user** - Block a user
+- **x_unblock_user** - Unblock a user
 
 ## Installation
 
@@ -66,6 +85,10 @@ claude mcp add x-mcp -- x-mcp -env /path/to/your/.env
 - "Post a tweet saying Hello from X MCP!"
 - "Get user profile for elonmusk"
 - "Post a thread about the top 3 Go features"
+- "Like this tweet: 123456789"
+- "Get my recent mentions"
+- "Mute user @spammer"
+- "Show me tweets from my 'Tech News' list"
 
 ## Configuration
 
