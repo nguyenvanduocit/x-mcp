@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"crypto/tls"
 	"fmt"
 	"net/http"
@@ -46,4 +47,26 @@ var TwitterClient = sync.OnceValue(func() *twitter.Client {
 		Client:     httpClient,
 		Host:       "https://api.twitter.com",
 	}
+})
+
+var AuthUserID = sync.OnceValue(func() string {
+	client := TwitterClient()
+
+	opts := twitter.UserLookupOpts{
+		UserFields: []twitter.UserField{
+			twitter.UserFieldUserName,
+		},
+	}
+
+	resp, err := client.AuthUserLookup(context.Background(), opts)
+	if err != nil {
+		panic(fmt.Sprintf("failed to get authenticated user: %v", err))
+	}
+
+	dictionaries := resp.Raw.UserDictionaries()
+	for _, dict := range dictionaries {
+		return dict.User.ID
+	}
+
+	panic("no authenticated user found")
 })
