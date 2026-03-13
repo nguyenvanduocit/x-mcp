@@ -36,7 +36,21 @@ builds:
       - -s -w -X main.version={{.Version}}
 
 archives:
-  - name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+  - id: x-mcp
+    ids:
+      - x-mcp
+    name_template: "x-mcp_{{ .Os }}_{{ .Arch }}"
+    formats:
+      - tar.gz
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+
+  - id: x-cli
+    ids:
+      - x-cli
+    name_template: "x-cli_{{ .Os }}_{{ .Arch }}"
     formats:
       - tar.gz
     format_overrides:
