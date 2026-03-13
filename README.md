@@ -126,5 +126,71 @@ go run scripts/verify-token/main.go \
   -access-token-secret=$X_ACCESS_TOKEN_SECRET
 ```
 
+## CLI Usage
+
+In addition to the MCP server, `x-mcp` ships a standalone CLI binary (`x-cli`) for direct terminal use — no MCP client needed.
+
+### Installation
+
+```bash
+just install-cli
+# or
+go install github.com/nguyenvanduocit/x-mcp/cmd/cli@latest
+```
+
+### Quick Start
+
+```bash
+export X_API_KEY=your-api-key
+export X_API_SECRET=your-api-secret
+export X_ACCESS_TOKEN=your-access-token
+export X_ACCESS_TOKEN_SECRET=your-access-token-secret
+# or
+x-cli --env .env <command> [flags]
+```
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `post-tweet` | Post a new tweet |
+| `delete-tweet` | Delete a tweet |
+| `search` | Search tweets |
+| `get-user` | Get user profile |
+| `get-user-timeline` | Get user's timeline |
+| `post-thread` | Post a thread |
+| `like-tweet` | Like a tweet |
+| `unlike-tweet` | Unlike a tweet |
+| `retweet` | Retweet a tweet |
+| `unretweet` | Undo a retweet |
+| `get-mentions` | Get mentions |
+| `mute-user` | Mute a user |
+| `block-user` | Block a user |
+
+### Examples
+
+```bash
+# Post a tweet
+x-cli post-tweet --text "Hello from x-cli!"
+
+# Search tweets
+x-cli search --query "golang MCP" --max-results 10
+
+# Get user info
+x-cli get-user --username myusername
+
+# Like a tweet
+x-cli like-tweet --tweet-id 1234567890
+
+# JSON output
+x-cli search --query "golang" --output json | jq '.[].text'
+```
+
+### Flags
+
+Every command accepts:
+- `--env string` — Path to `.env` file
+- `--output string` — Output format: `text` (default) or `json`
+
 ## License
 MIT
