@@ -194,3 +194,11 @@ Every command accepts:
 
 ## License
 MIT
+
+## Installation
+
+### Homebrew (macOS/Linux)
+
+```bash
+brew install nguyenvanduocit/tap/x-mcp
+```
