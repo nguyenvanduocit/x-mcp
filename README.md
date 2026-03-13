@@ -202,3 +202,4 @@ MIT
 ```bash
 brew install nguyenvanduocit/tap/x-mcp
 ```
+fix: trigger release processing after PR creation permission fix
