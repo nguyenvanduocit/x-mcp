@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/nguyenvanduocit/x-mcp/compare/v1.0.0...v1.0.1) (2026-03-13)
+
+
+### Bug Fixes
+
+* trigger release after enabling PR creation permissions ([c7afcea](https://github.com/nguyenvanduocit/x-mcp/commit/c7afcea8ca47e8f105750643038a88ad797f855e))
+
 ## 1.0.0 (2026-03-13)
 
 
