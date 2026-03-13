@@ -135,7 +135,7 @@ In addition to the MCP server, `x-mcp` ships a standalone CLI binary (`x-cli`) f
 ```bash
 just install-cli
 # or
-go install github.com/nguyenvanduocit/x-mcp/cmd/cli@latest
+go install github.com/nguyenvanduocit/x-mcp/cmd/x-cli@latest
 ```
 
 ### Quick Start
